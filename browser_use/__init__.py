@@ -21,15 +21,30 @@ from browser_use.browser.context import BrowserContextConfig
 from browser_use.controller.service import Controller as Controller
 from browser_use.dom.service import DomService as DomService
 
+from browser_use.mobile_agent.service import Agent as MobileAgent
+from browser_use.mobile_agent.prompts import SystemPrompt as PhoneSystemPrompt
+from browser_use.mobile_agent.views import PhoneActionModel as PhoneActionModel
+from browser_use.mobile_agent.views import PhoneActionResult as PhoneActionResult
+from browser_use.mobile_agent.views import (
+    PhoneAgentHistoryList as PhoneAgentHistoryList,
+)
+from browser_use.phone.context import PhoneContextConfig
+from browser_use.phone_controller.service import Controller as Controller
+
 __all__ = [
-	'Agent',
-	'Browser',
-	'BrowserConfig',
-	'Controller',
-	'DomService',
-	'SystemPrompt',
-	'ActionResult',
-	'ActionModel',
-	'AgentHistoryList',
-	'BrowserContextConfig',
+    "Agent",
+    "MobileAgent",
+    "Browser",
+    "BrowserConfig",
+    "PhoneContextConfig",
+    "Controller",
+    "DomService",
+    "SystemPrompt",
+    "ActionResult",
+    "ActionModel",
+    "AgentHistoryList",
+    "BrowserContextConfig",
+    "PhoneActionResult",
+    "PhoneActionModel",
+    "PhoneAgentHistoryList",
 ]

@@ -83,6 +83,33 @@
             ],
             "console": "integratedTerminal",
             "justMyCode": false
+        },
+        {
+            "name": "workflow",
+            "type": "python",
+            "request": "launch",
+            "program": "workflow.py",
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "agent",
+            "type": "python",
+            "request": "launch",
+            "program": "test.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+			"env": {
+				"ALIYU.vscode/launch.jsonN_API_KEY": "sk-86242510cc3f431d986e30e5422db315",
+			}
+        },
+		{
+            "name": "browser_agent",
+            "type": "python",
+            "request": "launch",
+            "program": "test_browser.py",
+            "console": "integratedTerminal",
+            "justMyCode": false
         }
     ]
 }
