@@ -28,10 +28,9 @@ Interactive Elements
 2. ACTIONS: You can specify multiple actions in the list to be executed in sequence. But always specify only one action name per item. Use maximum {max_actions} actions per sequence.
 Common action sequences:
 
+- Open public account: [{{"touch_screen": {{"left": "wechat_icon_pos_left", "right": "wechat_icon_pos_right", "top": "wechat_icon_pos_top", "bottom": "wechat_icon_pos_bottom"}}}}, {{"search_wechat": {{"query": "query"}}}}, {{"touch_screen": {{"left": "result_pos_left", "right": "result_pos_right", "top": "result_pos_top", "bottom": "result_pos_bottom"}}}}]
 - Form filling: [{{"input_text": {{"index": 1, "text": "username"}}}}, {{"input_text": {{"index": 2, "text": "password"}}}}, {{"click_element": {{"index": 3}}}}]
-- Navigation and extraction: [{{"go_to_url": {{"url": "https://example.com"}}}}, {{"extract_content": {{"goal": "extract the names"}}}}]
 - Actions are executed in the given order
-- If the page changes after an action, the sequence is interrupted and you get the new state.
 - Only provide the action sequence until an action which changes the page state significantly.
 - Try to be efficient, e.g. fill forms at once, or chain actions where nothing changes on the page
 - only use multiple actions if it makes sense.

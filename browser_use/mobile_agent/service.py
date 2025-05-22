@@ -72,11 +72,11 @@ from browser_use.dom.history_tree_processor.service import (
 )
 from browser_use.exceptions import LLMException
 from browser_use.telemetry.service import ProductTelemetry
-from browser_use.telemetry.views import (
-    AgentEndTelemetryEvent,
-    AgentRunTelemetryEvent,
-    AgentStepTelemetryEvent,
-)
+# from browser_use.telemetry.views import (
+#     AgentEndTelemetryEvent,
+#     AgentRunTelemetryEvent,
+#     AgentStepTelemetryEvent,
+# )
 from browser_use.utils import (
     check_env_variables,
     time_execution_async,
@@ -434,8 +434,9 @@ class Agent(Generic[Context]):
         try:
             time.sleep(5)
             state = await self.phone_context.get_state()
-            state.screenshot, top, left = take_phone_screenshot()
-            state.touchable_elements = parse_phone_screenshot(state.screenshot)
+            screenshot_path = f"screenshot_{self.state.n_steps}.png"
+            state.screenshot, top, left, detections = take_phone_screenshot(screenshot_path)
+            state.touchable_elements = parse_phone_screenshot(screenshot_path, detections)
             # active_page = await self.phone_context.get_current_page()
 
             # generate procedural memory if needed
@@ -601,19 +602,19 @@ class Agent(Generic[Context]):
                 if model_output
                 else []
             )
-            self.telemetry.capture(
-                AgentStepTelemetryEvent(
-                    agent_id=self.state.agent_id,
-                    step=self.state.n_steps,
-                    actions=actions,
-                    consecutive_failures=self.state.consecutive_failures,
-                    step_error=(
-                        [r.error for r in result if r.error]
-                        if result
-                        else ["No result"]
-                    ),
-                )
-            )
+            # self.telemetry.capture(
+            #     AgentStepTelemetryEvent(
+            #         agent_id=self.state.agent_id,
+            #         step=self.state.n_steps,
+            #         actions=actions,
+            #         consecutive_failures=self.state.consecutive_failures,
+            #         step_error=(
+            #             [r.error for r in result if r.error]
+            #             if result
+            #             else ["No result"]
+            #         ),
+            #     )
+            # )
             if not result:
                 return
 
@@ -825,17 +826,17 @@ class Agent(Generic[Context]):
         logger.info(f"🚀 Starting task: {self.task}")
 
         logger.debug(f"Version: {self.version}, Source: {self.source}")
-        self.telemetry.capture(
-            AgentRunTelemetryEvent(
-                agent_id=self.state.agent_id,
-                use_vision=self.settings.use_vision,
-                task=self.task,
-                model_name=self.model_name,
-                chat_model_library=self.chat_model_library,
-                version=self.version,
-                source=self.source,
-            )
-        )
+        # self.telemetry.capture(
+        #     AgentRunTelemetryEvent(
+        #         agent_id=self.state.agent_id,
+        #         use_vision=self.settings.use_vision,
+        #         task=self.task,
+        #         model_name=self.model_name,
+        #         chat_model_library=self.chat_model_library,
+        #         version=self.version,
+        #         source=self.source,
+        #     )
+        # )
 
     async def take_step(self) -> tuple[bool, bool]:
         """Take a step
@@ -962,18 +963,18 @@ class Agent(Generic[Context]):
             # Unregister signal handlers before cleanup
             signal_handler.unregister()
 
-            self.telemetry.capture(
-                AgentEndTelemetryEvent(
-                    agent_id=self.state.agent_id,
-                    is_done=self.state.history.is_done(),
-                    success=self.state.history.is_successful(),
-                    steps=self.state.n_steps,
-                    max_steps_reached=self.state.n_steps >= max_steps,
-                    errors=self.state.history.errors(),
-                    total_input_tokens=self.state.history.total_input_tokens(),
-                    total_duration_seconds=self.state.history.total_duration_seconds(),
-                )
-            )
+            # self.telemetry.capture(
+            #     AgentEndTelemetryEvent(
+            #         agent_id=self.state.agent_id,
+            #         is_done=self.state.history.is_done(),
+            #         success=self.state.history.is_successful(),
+            #         steps=self.state.n_steps,
+            #         max_steps_reached=self.state.n_steps >= max_steps,
+            #         errors=self.state.history.errors(),
+            #         total_input_tokens=self.state.history.total_input_tokens(),
+            #         total_duration_seconds=self.state.history.total_duration_seconds(),
+            #     )
+            # )
 
             await self.close()
 

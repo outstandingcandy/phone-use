@@ -82,7 +82,7 @@ class Controller(Generic[Context]):
 
         @self.registry.action(
             "Search the query in Wechat in the current tab, the query should be a search query like humans search in Wechat, concrete and not vague or super long. More the single most important items. "
-            "You can use this to search for Wechat Official Account, Wechat articles, Wechat mini programs, etc.",
+            "You can use this to search for Wechat Public Account, Wechat articles, Wechat mini programs, etc.",
             param_model=SearchWechatAction,
         )
         async def search_wechat(params: SearchWechatAction):
@@ -123,8 +123,10 @@ class Controller(Generic[Context]):
             param_model=TouchScreenAction,
         )
         async def touch_screen(params: TouchScreenAction):
-            computer_x = (params.left + params.right) / 2 * 330 + params.x_offset
-            computer_y = (params.top + params.bottom) / 2 * 750 + params.y_offset
+            # computer_x = (params.left + params.right) / 2 * 330 + params.x_offset
+            # computer_y = (params.top + params.bottom) / 2 * 750 + params.y_offset
+            computer_x = (params.left + params.right) / 2 + params.x_offset
+            computer_y = (params.top + params.bottom) / 2 + params.y_offset
             move_mouse(computer_x, computer_y)
             click_mouse()
             click_mouse()
@@ -230,12 +232,12 @@ class Controller(Generic[Context]):
             for action_name, params in action.model_dump(exclude_unset=True).items():
                 if params is not None:
                     # with Laminar.start_as_current_span(
-                    # 	name=action_name,
-                    # 	input={
-                    # 		'action': action_name,
-                    # 		'params': params,
-                    # 	},
-                    # 	span_type='TOOL',
+                    #     name=action_name,
+                    #     input={
+                    #         'action': action_name,
+                    #         'params': params,
+                    #     },
+                    #     span_type='TOOL',
                     # ):
                     result = await self.registry.execute_action(
                         action_name,
